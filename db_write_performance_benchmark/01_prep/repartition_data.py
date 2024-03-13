@@ -1,5 +1,7 @@
 from pyspark.sql import SparkSession
 
+from db_write_performance_benchmark.utils.log import logger
+
 spark = (
     SparkSession.builder.config("spark.executor.memory", "8g")
     .config("spark.driver.memory", "8g")
@@ -8,10 +10,10 @@ spark = (
 )
 
 
-filename = "data/raw/buildings-THA.parquet"
-df = spark.read.parquet(filename)
-print(f"Total rows: {df.count()}")
-print(df.show(5))
+path = "data/raw/buildings-THA.parquet"
+df = spark.read.parquet(path)
+logger.info(f"Total rows: {df.count()}")
+logger.info(df.show(5))  # type:ignore
 
 partitions = int(
     1024 * 4 / 128
