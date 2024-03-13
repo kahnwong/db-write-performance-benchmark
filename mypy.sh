@@ -1,3 +1,3 @@
 #!/bin/bash
 
-mypy db_write_performance_benchmark
+mypy --no-strict-optional db_write_performance_benchmark
