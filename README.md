@@ -5,7 +5,6 @@
 - pandas
 - polars
 - dlt
-- dask
 
 ## Database / destination
 - postgres
