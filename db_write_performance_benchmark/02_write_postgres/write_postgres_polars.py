@@ -2,9 +2,9 @@ import os
 import time
 import uuid
 
+import polars as pl
 import psutil  # type:ignore
 from dotenv import load_dotenv
-from pyspark.sql import SparkSession
 
 from db_write_performance_benchmark.model.experiment import Experiment
 from db_write_performance_benchmark.utils.log import logger
@@ -24,20 +24,14 @@ N_ROWS = None
 if N_ROWS_RAW:
     N_ROWS = int(N_ROWS_RAW)
 
-spark = (
-    SparkSession.builder.config("spark.executor.memory", "8g")
-    .config("spark.driver.memory", "8g")
-    .config("spark.jars.packages", "org.postgresql:postgresql:42.7.2")
-    .getOrCreate()
-)
 
 # read
-path = "data/repartitioned"
-df = spark.read.parquet(path)
+path = "data/repartitioned_no_binary_col"
+df = pl.scan_parquet(f"{path}/*.parquet").collect()
 
 # start tracking
 RUN_ID = str(uuid.uuid4())
-FRAMEWORK = "spark"
+FRAMEWORK = "polars"
 DATABASE = "postgres"
 START_TIME = time.time()
 
@@ -45,21 +39,18 @@ logger.info(f"Start experiment: {RUN_ID}")
 
 
 # write
-uri = f"jdbc:postgresql://{POSTGRES_HOSTNAME}:{POSTGRES_PORT}/{POSTGRES_DBNAME}"
+uri = f"postgresql://{POSTGRES_USERNAME}:{POSTGRES_PASSWORD}@{POSTGRES_HOSTNAME}:{POSTGRES_PORT}/{POSTGRES_DBNAME}"
 
 if N_ROWS:
     df = df.limit(N_ROWS)
 
 (
-    df.write.format("jdbc")
-    .option("url", uri)
-    .option("dbtable", POSTGRES_TABLENAME)
-    .option("user", POSTGRES_USERNAME)
-    .option("password", POSTGRES_PASSWORD)
-    .option("driver", "org.postgresql.Driver")
-    .option("truncate", "true")
-    .mode("overwrite")
-    .save()
+    df.write_database(
+        table_name=POSTGRES_TABLENAME,
+        connection=uri,
+        if_table_exists="replace",
+        engine="adbc",
+    )
 )
 
 # write logs

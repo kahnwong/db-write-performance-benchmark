@@ -15,7 +15,14 @@ df = spark.read.parquet(path)
 logger.info(f"Total rows: {df.count()}")
 logger.info(df.show(5))  # type:ignore
 
+# full
 partitions = int(
     1024 * 4 / 128
 )  # original parquet is 4GB, optimum parquet partition is 128MB
 df.repartition(partitions).write.parquet("data/repartitioned", mode="overwrite")
+
+# no binary column
+partitions = int(3)  # original parquet is 4GB, optimum parquet partition is 128MB
+df.drop("geometry").repartition(partitions).write.parquet(
+    "data/repartitioned_no_binary_col", mode="overwrite"
+)
