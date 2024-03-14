@@ -26,10 +26,6 @@ if N_ROWS_RAW:
     N_ROWS = int(N_ROWS_RAW)
 
 
-# read
-path = "data/repartitioned_no_binary_col"
-df = pd.read_parquet(path)
-
 # start tracking
 RUN_ID = str(uuid.uuid4())
 FRAMEWORK = "pandas"
@@ -37,6 +33,11 @@ DATABASE = "postgres"
 START_TIME = time.time()
 
 logger.info(f"Start experiment: {RUN_ID}")
+
+
+# read
+path = "data/repartitioned_no_binary_col"
+df = pd.read_parquet(path)
 
 
 # write

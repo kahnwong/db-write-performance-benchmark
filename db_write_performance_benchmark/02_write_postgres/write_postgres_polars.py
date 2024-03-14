@@ -25,10 +25,6 @@ if N_ROWS_RAW:
     N_ROWS = int(N_ROWS_RAW)
 
 
-# read
-path = "data/repartitioned_no_binary_col"
-df = pl.scan_parquet(f"{path}/*.parquet").collect()
-
 # start tracking
 RUN_ID = str(uuid.uuid4())
 FRAMEWORK = "polars"
@@ -36,6 +32,10 @@ DATABASE = "postgres"
 START_TIME = time.time()
 
 logger.info(f"Start experiment: {RUN_ID}")
+
+# read
+path = "data/repartitioned_no_binary_col"
+df = pl.scan_parquet(f"{path}/*.parquet").collect()
 
 
 # write

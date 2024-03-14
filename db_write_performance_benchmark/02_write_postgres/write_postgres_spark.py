@@ -31,9 +31,6 @@ spark = (
     .getOrCreate()
 )
 
-# read
-path = "data/repartitioned"
-df = spark.read.parquet(path)
 
 # start tracking
 RUN_ID = str(uuid.uuid4())
@@ -42,6 +39,11 @@ DATABASE = "postgres"
 START_TIME = time.time()
 
 logger.info(f"Start experiment: {RUN_ID}")
+
+
+# read
+path = "data/repartitioned_no_binary_col"
+df = spark.read.parquet(path)
 
 
 # write
@@ -58,6 +60,7 @@ if N_ROWS:
     .option("password", POSTGRES_PASSWORD)
     .option("driver", "org.postgresql.Driver")
     .option("truncate", "true")
+    .option("numPartitions", 6)
     .mode("overwrite")
     .save()
 )

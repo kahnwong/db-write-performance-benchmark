@@ -20,6 +20,8 @@ adbc-driver-postgresql = "^0.10.0"
 pyarrow = "^15.0.1"
 sqlalchemy = "^2.0.28"
 psycopg2-binary = "^2.9.9"
+seaborn = "^0.13.2"
+matplotlib = "^3.8.3"
 
 
 [tool.poetry.group.dev.dependencies]

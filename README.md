@@ -8,6 +8,7 @@ Source [here](ttps://beta.source.coop/vida/google-microsoft-open-buildings/geopa
 
 - Macbook Pro 2023 - M3
 - Docker is used for databases, 2 CPU and 2 GB RAM provisioned
+- Dataset total rows: 55,488,961
 
 ## Frameworks
 - spark
