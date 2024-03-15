@@ -19,10 +19,10 @@ POSTGRES_PORT = os.environ.get("POSTGRES_PORT")
 POSTGRES_DBNAME = os.environ.get("POSTGRES_DBNAME")
 POSTGRES_TABLENAME = os.environ.get("POSTGRES_TABLENAME")
 
-N_ROWS_RAW = os.environ.get("N_ROWS")
+N_ROWS_STR = os.environ.get("N_ROWS")
 N_ROWS = None
-if N_ROWS_RAW:
-    N_ROWS = int(N_ROWS_RAW)
+if N_ROWS_STR:
+    N_ROWS = int(N_ROWS_STR)
 
 spark = (
     SparkSession.builder.config("spark.executor.memory", "8g")
@@ -42,15 +42,13 @@ logger.info(f"Start experiment: {RUN_ID}")
 
 
 # read
-path = "data/repartitioned_no_binary_col"
+path = f"data/nyc-trip-data/limit={N_ROWS}"
 df = spark.read.parquet(path)
 
 
 # write
 uri = f"jdbc:postgresql://{POSTGRES_HOSTNAME}:{POSTGRES_PORT}/{POSTGRES_DBNAME}"
 
-if N_ROWS:
-    df = df.limit(N_ROWS)
 
 (
     df.write.format("jdbc")

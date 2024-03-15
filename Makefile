@@ -3,7 +3,7 @@
 02-start-experiment:
 	python3 db_write_performance_benchmark/02_write_postgres/write_postgres_spark.py
 	python3 db_write_performance_benchmark/02_write_postgres/write_postgres_polars.py
-	python3 db_write_performance_benchmark/02_write_postgres/write_postgres_pandas.py
+# 	python3 db_write_performance_benchmark/02_write_postgres/write_postgres_pandas.py
 
 run-trials:
 	scripts/run.sh

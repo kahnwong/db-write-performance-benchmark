@@ -19,11 +19,10 @@ POSTGRES_PORT = os.environ.get("POSTGRES_PORT")
 POSTGRES_DBNAME = os.environ.get("POSTGRES_DBNAME")
 POSTGRES_TABLENAME = os.environ.get("POSTGRES_TABLENAME")
 
-N_ROWS_RAW = os.environ.get("N_ROWS")
+N_ROWS_STR = os.environ.get("N_ROWS")
 N_ROWS = None
-if N_ROWS_RAW:
-    N_ROWS = int(N_ROWS_RAW)
-
+if N_ROWS_STR:
+    N_ROWS = int(N_ROWS_STR)
 
 # start tracking
 RUN_ID = str(uuid.uuid4())
@@ -34,15 +33,13 @@ START_TIME = time.time()
 logger.info(f"Start experiment: {RUN_ID}")
 
 # read
-path = "data/repartitioned_no_binary_col"
+path = f"data/nyc-trip-data/limit={N_ROWS}"
 df = pl.scan_parquet(f"{path}/*.parquet").collect()
 
 
 # write
 uri = f"postgresql://{POSTGRES_USERNAME}:{POSTGRES_PASSWORD}@{POSTGRES_HOSTNAME}:{POSTGRES_PORT}/{POSTGRES_DBNAME}"
 
-if N_ROWS:
-    df = df.limit(N_ROWS)
 
 (
     df.write_database(
