@@ -5,7 +5,7 @@ from polars import col
 
 
 # read data
-df = pl.read_ndjson("data/experimen_logs.ndjson")
+df = pl.read_ndjson("data/experiment_logs.ndjson")
 
 # convert n_rows to millions
 df = df.with_columns((col("n_rows") / 1_000_000).alias("n_rows").cast(pl.Int32))
@@ -41,4 +41,4 @@ ax1.set_ylabel("Bar: Duration (in seconds)")
 sns.pointplot(data=df, x="n_rows", y="swap_usage", hue="framework", ax=ax2)
 ax2.set_ylabel("Line: Swap Usage (in GB)")
 
-plt.savefig("data/experimen_logs.png")
+plt.savefig("data/experiment_logs.png")
