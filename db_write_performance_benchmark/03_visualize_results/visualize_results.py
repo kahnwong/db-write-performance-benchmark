@@ -34,7 +34,7 @@ ax2 = ax1.twinx()
 
 
 sns.barplot(data=df, x="n_rows", y="duration", hue="framework", ax=ax1)
-ax1.set_title("Database write performance")
+ax1.set_title("Postgres write performance")
 ax1.set_xlabel("Rows (in millions)")
 ax1.set_ylabel("Bar: Duration (in seconds)")
 
