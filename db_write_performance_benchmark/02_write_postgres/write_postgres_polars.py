@@ -1,10 +1,7 @@
 import polars as pl
-from dotenv import load_dotenv
 
 from db_write_performance_benchmark.benchmark import Benchmark
 from db_write_performance_benchmark.benchmark import dataset_rows
-
-load_dotenv()
 
 
 class BenchmarkPostgresPolars(Benchmark):
@@ -35,4 +32,4 @@ if __name__ == "__main__":
         benchmark.write()
         benchmark.track_experiment()
 
-        break
+        break  # [TODO] remove
