@@ -12,12 +12,21 @@ from db_write_performance_benchmark.utils.log_writer import write_experiment_log
 load_dotenv()
 logger = init_logger(__name__)
 
-POSTGRES_HOSTNAME = os.environ.get("POSTGRES_HOSTNAME")
-POSTGRES_USERNAME = os.environ.get("POSTGRES_USERNAME")
-POSTGRES_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
-POSTGRES_PORT = os.environ.get("POSTGRES_PORT")
-POSTGRES_DBNAME = os.environ.get("POSTGRES_DBNAME")
-POSTGRES_TABLENAME = os.environ.get("POSTGRES_TABLENAME")
+POSTGRES_HOSTNAME = os.getenv("POSTGRES_HOSTNAME")
+POSTGRES_USERNAME = os.getenv("POSTGRES_USERNAME")
+POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
+POSTGRES_PORT = os.getenv("POSTGRES_PORT")
+POSTGRES_DBNAME = os.getenv("POSTGRES_DBNAME")
+POSTGRES_TABLENAME = os.getenv("POSTGRES_TABLENAME")
+
+CLICKHOUSE_HOSTNAME = os.getenv("CLICKHOUSE_HOSTNAME")
+CLICKHOUSE_USER = os.getenv("CLICKHOUSE_USER")
+CLICKHOUSE_PASSWORD = os.getenv("CLICKHOUSE_PASSWORD")
+CLICKHOUSE_HTTP_PORT = os.getenv("CLICKHOUSE_HTTP_PORT")
+CLICKHOUSE_DB = os.getenv("CLICKHOUSE_DB")
+CLICKHOUSE_TABLENAME = os.getenv("CLICKHOUSE_TABLENAME")
+
+
 N_ROWS_STR = os.environ.get("N_ROWS")
 
 
@@ -47,6 +56,15 @@ class Benchmark:
         self.database = ""
         self.start_time = time.time()
         self.end_time = ""
+
+        # clickhouse
+        self.clickhouse_hostname = CLICKHOUSE_HOSTNAME
+        self.clickhouse_user = CLICKHOUSE_USER
+        self.clickhouse_password = CLICKHOUSE_PASSWORD
+        self.clickhouse_http_port = CLICKHOUSE_HTTP_PORT
+        self.clickhouse_db = CLICKHOUSE_DB
+        self.clickhouse_tablename = CLICKHOUSE_TABLENAME
+        self.clickhouse_uri = ""
 
         # postgres
         self.postgres_hostname = POSTGRES_HOSTNAME
