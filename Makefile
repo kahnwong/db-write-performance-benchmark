@@ -7,5 +7,6 @@
 visualize:
 	python3 db_write_performance_benchmark/03_visualize_results/visualize_results.py
 
-start-postgres:
+start-db:
+	docker compose -f docker-compose-clickhouse.yaml up -d
 	docker compose -f docker-compose-postgres.yaml up -d
