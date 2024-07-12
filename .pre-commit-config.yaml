@@ -56,8 +56,6 @@ repos:
     hooks:
       - id: mypy
         name: mypy
-        entry: "bash mypy.sh"
+        entry: "poetry run mypy --no-strict-optional db_write_performance_benchmark"
         language: system
         types: [python]
-        pass_filenames: false
-        require_serial: true
