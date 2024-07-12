@@ -57,7 +57,13 @@ class Benchmark:
         self.postgres_table_name = POSTGRES_TABLENAME
         self.postgres_uri = ""
 
+        # data object
+        self.df = None  # type: ignore
+
         logger.info(f"Start experiment - {self.n_rows} rows: {self.run_id}")
+
+    def read(self):
+        raise NotImplementedError
 
     def write(self):
         raise NotImplementedError

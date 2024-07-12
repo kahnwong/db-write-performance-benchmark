@@ -12,12 +12,13 @@ class BenchmarkPostgresPolars(Benchmark):
         self.database = "postgres"
         self.postgres_uri = f"postgresql://{self.postgres_username}:{self.postgres_password}@{self.postgres_hostname}:{self.postgres_port}/{self.postgres_dbname}"
 
-    def write(self):
+    def read(self):
         path = f"data/nyc-trip-data/limit={self.n_rows}"
-        df = pl.scan_parquet(f"{path}/*.parquet").collect()
+        self.df = pl.scan_parquet(f"{path}/*.parquet").collect()
 
+    def write(self):
         (
-            df.write_database(
+            self.df.write_database(
                 table_name=self.postgres_table_name,
                 connection=self.postgres_uri,
                 if_table_exists="replace",
@@ -29,5 +30,6 @@ class BenchmarkPostgresPolars(Benchmark):
 if __name__ == "__main__":
     for n_rows in dataset_rows:
         benchmark = BenchmarkPostgresPolars(n_rows=n_rows)
+        benchmark.read()
         benchmark.write()
         benchmark.track_experiment()

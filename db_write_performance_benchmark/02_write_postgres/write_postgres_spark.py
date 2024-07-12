@@ -12,7 +12,7 @@ class BenchmarkPostgresSpark(Benchmark):
         self.database = "postgres"
         self.postgres_uri = f"jdbc:postgresql://{self.postgres_hostname}:{self.postgres_port}/{self.postgres_dbname}"
 
-    def write(self):
+    def read(self):
         spark = (
             SparkSession.builder.config("spark.executor.memory", "8g")
             .config("spark.driver.memory", "8g")
@@ -21,10 +21,11 @@ class BenchmarkPostgresSpark(Benchmark):
         )
 
         path = f"data/nyc-trip-data/limit={self.n_rows}"
-        df = spark.read.parquet(path)
+        self.df = spark.read.parquet(path)
 
+    def write(self):
         (
-            df.write.format("jdbc")
+            self.df.write.format("jdbc")
             .option("url", self.postgres_uri)
             .option("dbtable", self.postgres_table_name)
             .option("user", self.postgres_username)
@@ -40,5 +41,6 @@ class BenchmarkPostgresSpark(Benchmark):
 if __name__ == "__main__":
     for n_rows in dataset_rows:
         benchmark = BenchmarkPostgresSpark(n_rows=n_rows)
+        benchmark.read()
         benchmark.write()
         benchmark.track_experiment()
