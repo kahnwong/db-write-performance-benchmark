@@ -34,9 +34,7 @@ class BenchmarkClickhouseSpark(Benchmark):
             .option("user", self.clickhouse_user)
             .option("password", self.clickhouse_password)
             .option("driver", "com.clickhouse.jdbc.ClickHouseDriver")
-            .option(
-                "createTableOptions", "engine=MergeTree() order by tpep_pickup_datetime"
-            )
+            .option("createTableOptions", "engine=MergeTree() order by VendorID")
             .option("truncate", "true")
             .option("numPartitions", 6)
             .mode("overwrite")
