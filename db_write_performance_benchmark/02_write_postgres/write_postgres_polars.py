@@ -31,5 +31,3 @@ if __name__ == "__main__":
         benchmark = BenchmarkPostgresPolars(n_rows=n_rows)
         benchmark.write()
         benchmark.track_experiment()
-
-        break  # [TODO] remove
