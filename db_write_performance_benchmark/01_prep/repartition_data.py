@@ -1,6 +1,8 @@
 from pyspark.sql import SparkSession
 
-from db_write_performance_benchmark.utils.log import logger
+from db_write_performance_benchmark.utils.log import init_logger
+
+logger = init_logger(__name__)
 
 spark = (
     SparkSession.builder.config("spark.executor.memory", "8g")

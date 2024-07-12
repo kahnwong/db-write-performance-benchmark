@@ -6,10 +6,11 @@ import psutil  # type: ignore
 from dotenv import load_dotenv
 
 from db_write_performance_benchmark.model.experiment import Experiment
-from db_write_performance_benchmark.utils.log import logger
+from db_write_performance_benchmark.utils.log import init_logger
 from db_write_performance_benchmark.utils.log_writer import write_experiment_log
 
 load_dotenv()
+logger = init_logger(__name__)
 
 POSTGRES_HOSTNAME = os.environ.get("POSTGRES_HOSTNAME")
 POSTGRES_USERNAME = os.environ.get("POSTGRES_USERNAME")
@@ -56,7 +57,7 @@ class Benchmark:
         self.postgres_table_name = POSTGRES_TABLENAME
         self.postgres_uri = ""
 
-        logger.info(f"Start experiment: {self.run_id}")
+        logger.info(f"Start experiment - {self.n_rows} rows: {self.run_id}")
 
     def write(self):
         raise NotImplementedError
